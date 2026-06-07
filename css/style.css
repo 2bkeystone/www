@@ -1,0 +1,581 @@
+/* ==========================================================================
+   1. 기본 초기화 및 글로벌 스타일
+   ========================================================================== */
+html {
+    /* 자바스크립트 커스텀 스크롤 애니메이션과의 충돌 및 튕김 방지 */
+    scroll-behavior: auto !important; 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    color: #333333;
+    background-color: #fafafa;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 94%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   2. 헤더 및 내비게이션 (로고 깨짐/파란 박스 버그 완전 해결)
+   ========================================================================== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(13, 13, 13, 0.98); /* 프리미엄 딥 블랙 */
+    border-bottom: 1px solid #222222;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.logo a {
+    display: inline-flex;  
+    align-items: center;
+    height: 100%;
+    width: auto;
+}
+
+.gnb-logo {
+    height: 60px !important;    /* 295*160 화질 복원을 위한 최적의 높이 세팅 */
+    width: auto !important;     /* 가로폭 110.625px로 비율 깨짐 없이 자동 가변 확장 */
+    flex-shrink: 0 !important;  /* 레이아웃 내부에서 절대 찌그러지지 않도록 방어 */
+    max-width: none !important; 
+    display: block;
+    object-fit: contain;
+    image-rendering: auto;      
+    
+    /* 🚀 GPU 그래픽 가속 활성화로 선명한 벡터 라인 렌더링 구현 */
+    transform: translateZ(0);
+    
+    /* 🎨 파란색 박스 에러를 유발하던 블렌딩을 삭제하고, 안전한 반전 필터 연산 적용 */
+    filter: brightness(0) invert(1) drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    margin-left: 40px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #d4c3b3; 
+}
+
+/* ==========================================================================
+   3. 메인 히어로 섹션 (상단 여백 밸런스 조정)
+   ========================================================================== */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.hero-slides {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.hero-slides .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.hero-slides .slide.active {
+    opacity: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 20px;
+    margin-top: 16vh; /* h1 타이틀 구성을 위로 끌어올린 시각 균형값 */
+}
+
+.hero-content h1 {
+    font-size: 46px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+    word-break: keep-all;
+}
+
+.hero-brand {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: #d4c3b3; 
+    margin-bottom: 25px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    font-weight: 300;
+    opacity: 0.95;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    word-break: keep-all;
+}
+
+/* ==========================================================================
+   4. 공통 섹션 타이틀 컴포넌트
+   ========================================================================== */
+section {
+    padding: 100px 0; 
+}
+
+.section-title {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background-color: #8d7053;
+    margin: 15px auto 0 auto;
+}
+
+/* ==========================================================================
+   5. 회사 소개 섹션 (About Us)
+   ========================================================================== */
+.about-section {
+    background-color: #ffffff;
+}
+
+.about-grid {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.about-text p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+    word-break: keep-all;
+}
+
+.contact-info {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px dashed #dddddd;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 15px;
+}
+
+/* ==========================================================================
+   6. 포트폴리오 섹션 (Portfolio Grid & Tab Filter)
+   ========================================================================== */
+.portfolio-section {
+    background-color: #f4f4f4;
+}
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.filter-btn {
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    padding: 10px 24px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #222222;
+    color: #ffffff;
+    border-color: #222222;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.portfolio-item {
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s, opacity 0.3s ease;
+}
+
+.portfolio-item.hide {
+    display: none;
+}
+
+.portfolio-item:hover {
+    transform: translateY(-6px);
+}
+
+.item-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-img {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+}
+
+.item-info {
+    padding: 20px;
+}
+
+.item-info h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.item-info p {
+    font-size: 13px;
+    color: #777;
+}
+
+/* ==========================================================================
+   7. 시공 프로세스 섹션 (Work Process)
+   ========================================================================== */
+.process-section {
+    background-color: #ffffff;
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.process-card {
+    background-color: #fafafa;
+    padding: 30px 20px;
+    border-radius: 4px;
+    border-top: 3px solid #eeeeee;
+    transition: border-color 0.3s;
+}
+
+.process-card:hover {
+    border-top-color: #8d7053;
+}
+
+.process-num {
+    font-size: 32px;
+    font-weight: 700;
+    color: #8d7053;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.process-card h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.process-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+/* ==========================================================================
+   9. 푸터 스타일 (하단 안착 구조로 Work Process 여백 버그 해결)
+   ========================================================================== */
+footer {
+    position: relative; /* relative 기반 자연스러운 하단 배치 */
+    width: 100%;
+    z-index: 999;
+    background-color: rgba(17, 17, 17, 0.98);
+    backdrop-filter: blur(5px);
+    color: #888888;
+    padding: 50px 0; 
+    text-align: center;
+    font-size: 12px;
+    border-top: 1px solid #222222;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    line-height: 1.5;
+}
+
+.footer-brand {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+}
+
+.footer-info {
+    margin-bottom: 0;
+    color: #aaaaaa;
+}
+
+.footer-info span {
+    margin: 0 8px;
+}
+
+.copyright {
+    font-size: 11px;
+    color: #555555;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   10. 모바일 및 태블릿 반응형 레이아웃 처리
+   ========================================================================== */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        height: auto;
+        padding: 12px 0;
+    }
+    
+    .logo {
+        min-width: unset;
+        justify-content: center;
+        margin-bottom: 4px;
+    }
+
+    .gnb-logo {
+        height: 40px !important; 
+        width: auto !important;
+    }
+    
+    nav {
+        margin-top: 8px;
+    }
+    
+    nav a {
+        margin: 0 10px;
+        font-size: 12px;
+    }
+    
+    section {
+        padding: 60px 0;
+    }
+    
+    .hero {
+        align-items: center; 
+    }
+    
+    .hero-content {
+        margin-top: 0;
+    }
+    
+    .hero-content h1 {
+        font-size: 28px;
+    }
+    
+    .hero-brand {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+    
+    .form-group-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    footer {
+        padding: 40px 0; 
+        font-size: 11px;
+    }
+    .footer-brand {
+        font-size: 13px;
+    }
+    .footer-info span {
+        display: inline-block;
+        margin: 0 4px;
+    }
+    
+    .direct-btn-group, .sns-btn-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .sns-btn, .direct-btn {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+/* ==========================================================================
+   11. SNS 및 연락처 공식 통합 캡슐 버튼 디자인
+   ========================================================================== */
+.direct-btn-group, .sns-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+.direct-btn-group { margin-top: 10px; }
+.sns-btn-group { margin-top: 8px; margin-bottom: 4px; }
+
+.direct-btn, .sns-btn {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0 22px;
+    height: 38px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.direct-btn {
+    border: 1.5px solid #8d7053;
+    background-color: transparent;
+}
+.direct-btn i {
+    color: #8d7053;
+    font-size: 13px;
+}
+.direct-btn:hover {
+    background-color: #8d7053;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(141, 112, 83, 0.25);
+    transform: translateY(-2px);
+}
+.direct-btn:hover i {
+    color: #ffffff;
+}
+
+.sns-btn.instagram {
+    border: 1.5px solid #e1306c;
+}
+.sns-btn.instagram i {
+    color: #e1306c;
+    font-size: 14px;
+}
+.sns-btn.instagram:hover {
+    background-color: #e1306c;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(225, 48, 108, 0.35);
+    transform: translateY(-2px);
+}
+.sns-btn.instagram:hover i {
+    color: #ffffff;
+}
+
+.sns-btn.youtube {
+    border: 1.5px solid #ff0000;
+}
+.sns-btn.youtube i {
+    color: #ff0000;
+    font-size: 14px;
+}
+.sns-btn.youtube:hover {
+    background-color: #ff0000;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.35);
+    transform: translateY(-2px);
+}
+.sns-btn.youtube:hover i {
+    color: #ffffff;
+}
+
+.about-section .direct-btn { color: #333333; }
+.about-section .sns-btn { color: #333333; } 
+footer .direct-btn { color: #ffffff; }          
+footer .sns-btn { color: #ffffff; }
