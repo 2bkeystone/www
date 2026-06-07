@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (portfolioGrid) {
         portfolioGrid.innerHTML = portfolioData.map(item => `
-            <a href="portfolio/${item.folderName}/01.pdf" download="${item.title}.pdf" class="portfolio-item ${item.category}">
+            <a href="portfolio/${item.folderName}/00.pdf" download="${item.title}.pdf" class="portfolio-item ${item.category}">
                 <div class="item-inner">
                     <div class="item-img" style="background-image: url('portfolio/${item.folderName}/00.jpg');"></div>
                     <div class="item-info">
