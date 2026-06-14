@@ -66,7 +66,7 @@ header .container {
 
 .gnb-logo {
     height: 60px !important;    /* 295*160 화질 복원을 위한 최적의 높이 세팅 */
-    width: auto !important;     /* 가로폭 110.625px로 비율 깨짐 없이 자동 가변 확장 */
+    width: auto !important;      /* 가로폭 110.625px로 비율 깨짐 없이 자동 가변 확장 */
     flex-shrink: 0 !important;  /* 레이아웃 내부에서 절대 찌그러지지 않도록 방어 */
     max-width: none !important; 
     display: block;
@@ -247,7 +247,7 @@ section {
 }
 
 /* ==========================================================================
-   6. 포트폴리오 섹션 (Portfolio Grid & Tab Filter)
+   6. 포트폴리오 섹션 (Portfolio Grid & Slider UI)
    ========================================================================== */
 .portfolio-section {
     background-color: #f4f4f4;
@@ -304,10 +304,80 @@ section {
     flex-direction: column;
 }
 
-.item-img {
+/* 이미지 슬라이더 뷰포트 컨테이너 */
+.slider-container {
+    position: relative;
     height: 250px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+/* 좌우로 슬라이딩 될 가로 배치 트랙 */
+.slider-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 개별 슬라이드 이미지 프레임 */
+.slide-img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    cursor: zoom-in; /* 🚀 확대 보기가 가능하다는 인식을 주는 돋보기 커서 추가 */
+}
+
+/* 프리미엄 원형 미니멀 컨트롤 버튼 */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(13, 13, 13, 0.45);
+    color: #ffffff;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    z-index: 10;
+    opacity: 0;
+    transition: background 0.2s, opacity 0.3s ease;
+}
+
+/* 카드에 마우스를 올리면 슬라이드 화살표 노출 */
+.portfolio-item:hover .slider-btn {
+    opacity: 1;
+}
+
+/* 화살표 버튼 호버 시 우드 브라운 컬러 스위칭 */
+.slider-btn:hover {
+    background: rgba(141, 112, 83, 0.95);
+}
+
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+
+/* 우측 하단 페이지 안내 캡슐 박스 */
+.slider-indicator {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.95);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    z-index: 9;
 }
 
 .item-info {
@@ -375,7 +445,7 @@ section {
    9. 푸터 스타일 (하단 안착 구조로 Work Process 여백 버그 해결)
    ========================================================================== */
 footer {
-    position: relative; /* relative 기반 자연스러운 하단 배치 */
+    position: relative; 
     width: 100%;
     z-index: 999;
     background-color: rgba(17, 17, 17, 0.98);
@@ -579,3 +649,130 @@ footer {
 .about-section .sns-btn { color: #333333; } 
 footer .direct-btn { color: #ffffff; }          
 footer .sns-btn { color: #ffffff; }
+
+/* ==========================================================================
+   12. 🚀 [신규 디자인] 라이트박스 모달 크게 보기 시스템 스타일
+   ========================================================================== */
+.lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(10, 10, 10, 0.96); /* 프리미엄 시네마틱 딥 다크 배경 */
+    z-index: 9999; /* GNB 최상단 헤더보다 상위에 안착시킴 */
+    display: none; /* 평소엔 숨겨둠 */
+    align-items: center;
+    justify-content: center;
+}
+
+/* 대형 이미지 슬라이딩 뷰포트 영역 */
+.lightbox-content {
+    position: relative;
+    width: 86%;
+    max-width: 1200px;
+    height: 82vh;
+    overflow: hidden;
+}
+
+/* 좌우로 슬라이딩 될 가로 정렬 모달 트랙 */
+.lightbox-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 크게 보기 이미지 컴포넌트 프레임 */
+.lightbox-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    background-size: contain; /* 잘림 현상 방지를 위해 여백을 두더라도 원본 비율 완전 유지 */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 미니멀 시네마 컨트롤 버튼 공통 양식 */
+.lightbox-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 10010;
+    transition: all 0.25s ease;
+}
+
+.lightbox-control:hover {
+    background: #8d7053; /* 회사 테마 브라운 우드 컬러 매칭 */
+    border-color: #8d7053;
+    box-shadow: 0 0 20px rgba(141, 112, 83, 0.4);
+}
+
+.lightbox-prev { left: 30px; }
+.lightbox-next { right: 30px; }
+
+/* 모달 이탈 우측 상단 X 닫기 버튼 */
+.lightbox-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 42px;
+    font-weight: 300;
+    cursor: pointer;
+    z-index: 10020;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.lightbox-close:hover {
+    color: #ffffff;
+}
+
+/* 중앙 하단 인디케이터 플로팅 캡슐 */
+.lightbox-indicator {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 4px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    z-index: 10010;
+}
+
+/* 모바일 스크린 예외 규격 대응 최적화 */
+@media (max-width: 768px) {
+    .lightbox-content {
+        width: 100%;
+        height: 70vh;
+    }
+    .lightbox-control {
+        width: 42px;
+        height: 42px;
+        font-size: 14px;
+    }
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
+    .lightbox-close {
+        top: 20px;
+        right: 25px;
+        font-size: 36px;
+    }
+}
