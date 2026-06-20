@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    /* 기본 상태 (라이트 모드): 브라우저 탭이 밝을 때 -> 검은색 테두리와 글자 */
+    .favicon-box { 
+      stroke: #111111; 
+      stroke-width: 4.5; 
+      fill: none; 
+    }
+    .favicon-text { 
+      fill: #111111; 
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+      font-size: 44px; 
+      font-weight: 600; 
+      text-anchor: middle; 
+      dominant-baseline: middle;
+      letter-spacing: -1px;
+    }
+
+    /* 🚀 다크 모드 대응: 브라우저 탭이 어두울 때 -> 흰색 테두리와 글자로 자동 반전 */
+    @media (prefers-color-scheme: dark) {
+      .favicon-box { stroke: #ffffff; }
+      .favicon-text { fill: #ffffff; }
+    }
+  </style>
+
+  <rect x="14" y="14" width="72" height="72" class="favicon-box" />
+
+  <text x="50" y="53" class="favicon-text">2B</text>
+</svg>
