@@ -247,7 +247,7 @@ section {
 }
 
 /* ==========================================================================
-   6. 포트폴리오 섹션 (Portfolio Grid & Slider UI)
+   6. 포트폴리오 섹션
    ========================================================================== */
 .portfolio-section {
     background-color: #f4f4f4;
@@ -290,10 +290,6 @@ section {
     transition: transform 0.3s, opacity 0.3s ease;
 }
 
-.portfolio-item.hide {
-    display: none;
-}
-
 .portfolio-item:hover {
     transform: translateY(-6px);
 }
@@ -304,80 +300,53 @@ section {
     flex-direction: column;
 }
 
-/* 이미지 슬라이더 뷰포트 컨테이너 */
-.slider-container {
+/* 단일 이미지 가두기 전용 컨테이너 */
+.cover-container {
     position: relative;
     height: 250px;
     overflow: hidden;
     background-color: #e5e5e5;
+    cursor: pointer;
 }
 
-/* 좌우로 슬라이딩 될 가로 배치 트랙 */
-.slider-track {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* 개별 슬라이드 이미지 프레임 */
-.slide-img {
-    flex: 0 0 100%;
+/* 메인 그리드에 깔리는 단일 커버 이미지 */
+.cover-img {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    cursor: zoom-in; /* 🚀 확대 보기가 가능하다는 인식을 주는 돋보기 커서 추가 */
+    transition: transform 0.5s ease;
 }
 
-/* 프리미엄 원형 미니멀 컨트롤 버튼 */
-.slider-btn {
+/* 카드 마우스 호버 시 자연스럽게 줌인(Zoom-In)되는 고해상 효과 */
+.portfolio-item:hover .cover-img {
+    transform: scale(1.06);
+}
+
+/* 프리미엄 시네마틱 서치 렌더링 오버레이 레이어 */
+.zoom-overlay {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(13, 13, 13, 0.45);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 13, 13, 0.45);
     color: #ffffff;
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    z-index: 10;
-    opacity: 0;
-    transition: background 0.2s, opacity 0.3s ease;
-}
-
-/* 카드에 마우스를 올리면 슬라이드 화살표 노출 */
-.portfolio-item:hover .slider-btn {
-    opacity: 1;
-}
-
-/* 화살표 버튼 호버 시 우드 브라운 컬러 스위칭 */
-.slider-btn:hover {
-    background: rgba(141, 112, 83, 0.95);
-}
-
-.prev-btn { left: 15px; }
-.next-btn { right: 15px; }
-
-/* 우측 하단 페이지 안내 캡슐 박스 */
-.slider-indicator {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    color: rgba(255, 255, 255, 0.95);
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 11px;
+    gap: 8px;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.5px;
-    z-index: 9;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.portfolio-item:hover .zoom-overlay {
+    opacity: 1;
 }
 
 .item-info {
@@ -651,7 +620,7 @@ footer .direct-btn { color: #ffffff; }
 footer .sns-btn { color: #ffffff; }
 
 /* ==========================================================================
-   12. 🚀 [신규 디자인] 라이트박스 모달 크게 보기 시스템 스타일
+   12. 🚀 라이트박스 모달 크게 보기 시스템 스타일 (애니메이션 최적화 완료)
    ========================================================================== */
 .lightbox-modal {
     position: fixed;
@@ -691,6 +660,21 @@ footer .sns-btn { color: #ffffff; }
     background-size: contain; /* 잘림 현상 방지를 위해 여백을 두더라도 원본 비율 완전 유지 */
     background-position: center;
     background-repeat: no-repeat;
+    
+    /* 🚀 [신규 추가] 로딩 중 이미지가 가로로 쪼개지며 뜨는 에러를 완전히 지워주는 스마트 페이드인 처리 */
+    animation: fadeInImage 0.4s ease-in-out forwards;
+}
+
+/* 부드럽고 고급스러운 페이드인 및 미세 확대 물리 연출 키프레임 */
+@keyframes fadeInImage {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* 미니멀 시네마 컨트롤 버튼 공통 양식 */
